@@ -1,20 +1,21 @@
-/*  
- *  hello-1.c - The simplest kernel module.
- */
-#include <linux/module.h>	/* Needed by all modules */
-#include <linux/kernel.h>	/* Needed for KERN_INFO */
+#include <linux/module.h>    // included for all kernel modules
+#include <linux/kernel.h>    // included for KERN_INFO
+#include <linux/init.h>      // included for __init and __exit macros
 
-int init_module(void)
+MODULE_LICENSE("GPL");
+MODULE_AUTHOR("Salvador");
+MODULE_DESCRIPTION("A Simple Hello World module");
+
+static int __init hello_init(void)
 {
-	printk(KERN_INFO "Hello world 1.\n");
-
-	/* 
-	 * A non 0 return means init_module failed; module can't be loaded. 
-	 */
-	return 0;
+    printk(KERN_INFO "Hello world!\n");
+    return 0;
 }
 
-void cleanup_module(void)
+static void __exit hello_cleanup(void)
 {
-	printk(KERN_INFO "Goodbye world 1.\n");
+    printk(KERN_INFO "Cleaning up module.\n");
 }
+
+module_init(hello_init);
+module_exit(hello_cleanup);
